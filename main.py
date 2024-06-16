@@ -1,5 +1,8 @@
+# sudo su
+# apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 import cv2
 import numpy as np
+
 
 # Load HAAR face classifier
 face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
