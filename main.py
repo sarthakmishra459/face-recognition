@@ -1,11 +1,10 @@
-# sudo su
-# apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 import cv2
 import numpy as np
 
-
 # Load HAAR face classifier
 face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+stream_url = "udp://192.168.159.1:8080"
+
 
 # Load functions
 def face_extractor(img):
@@ -25,29 +24,30 @@ def face_extractor(img):
         cropped_face = img[y:y+h+50, x:x+w+50]
         return cropped_face  # Return the first face found
 
-# Initialize Video Capture (use a video file instead of webcam for testing)
-cap = cv2.VideoCapture('./video.mp4')
+# Initialize Video Capture
+cap = cv2.VideoCapture("./video1.mp4")
 count = 0
 
 # Collect 100 samples of your face from video input
 while True:
     ret, frame = cap.read()
     if not ret:
-        break  # End of video file
+        print("Failed to grab frame")
+        break
 
-    if face_extractor(frame) is not None:
+    face = face_extractor(frame)
+    if face is not None:
         count += 1
-        face = cv2.resize(face_extractor(frame), (400, 400))
-        # face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-
+        face = cv2.resize(face, (400, 400))
+        if(count == 2):
+            break
         # Save file in specified directory with unique name
-        file_name_path = './Images/' + str(count) + '.jpg'
+        file_name_path = './Images/' + str(count+99) + '.jpg'
         cv2.imwrite(file_name_path, face)
 
         # Put count on images and display live count
         cv2.putText(face, str(count), (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2)
         cv2.imshow('Face Cropper', face)
-        
     else:
         print("Face not found")
         pass
