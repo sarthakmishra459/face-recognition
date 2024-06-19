@@ -1,3 +1,5 @@
+
+
 # Face Recognition
 
 # Importing the libraries
@@ -10,9 +12,12 @@ import random
 import cv2
 from keras.models import load_model
 import numpy as np
-
+import sys
 from keras.preprocessing import image
-model = load_model('facefeatures_new_model_final.h5')
+
+sys.stdin.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')
+model = load_model('facefeatures_new_model (4).h5')
 
 # Loading the cascades
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -55,8 +60,14 @@ while True:
                      
         name="None matching"
         
-        if(pred[0][3]>0.5):
-            name='Krish'
+        if(pred[0][2]>0.25):
+            name='Sarthak'
+        elif(pred[0][0]>0.5):
+            name='Hugh Jackman'
+        elif(pred[0][1]>0.65):
+            name='RDJ'
+        elif(pred[0][3]>0.5):
+            name='Seema'
         cv2.putText(frame,name, (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0,255,0), 2)
     else:
         cv2.putText(frame,"No face found", (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0,255,0), 2)
